@@ -34,3 +34,24 @@ def test_viewer_draws_multiple_frames_while_stepping():
             assert viewer.draw(env.vehicle_state) is True
     finally:
         viewer.close()
+
+
+def test_viewer_draws_with_wide_fov_sensor_overlay():
+    env = make_default_env()
+    env.reset()
+    config = ViewerConfig(width=320, height=240, fps=0, lidar_range=25.0, lidar_fov=1.57)
+    viewer = LiveViewer(env.track, config=config)
+    try:
+        assert viewer.draw(env.vehicle_state) is True
+    finally:
+        viewer.close()
+
+
+def test_viewer_draws_with_sensor_overlay_disabled():
+    env = make_default_env()
+    env.reset()
+    viewer = LiveViewer(env.track, config=ViewerConfig(width=320, height=240, fps=0, lidar_range=None))
+    try:
+        assert viewer.draw(env.vehicle_state) is True
+    finally:
+        viewer.close()

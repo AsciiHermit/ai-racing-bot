@@ -8,9 +8,11 @@ headless CI) never needs it installed.
 """
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass, field
 
 from ars.viz.camera import Camera
+from ars.viz.car_sprite import CarSprite
 from ars.viz.track_geometry import TrackPolylines, build_track_polylines
 
 # Colors: brand-neutral, readable on the default pygame black-ish background.
@@ -20,6 +22,8 @@ COLOR_BOUNDARY = (235, 235, 235)
 COLOR_CENTERLINE = (90, 96, 110)
 COLOR_CAR = (226, 84, 64)
 COLOR_TEXT = (220, 220, 220)
+COLOR_SENSOR_RANGE = (255, 210, 90)
+COLOR_SENSOR_ORIGIN = (255, 230, 140)
 
 
 @dataclass
@@ -29,6 +33,8 @@ class ViewerConfig:
     fps: int = 60
     car_length: float = 4.5  # m, drawn size (F1-scale, independent of physics model)
     car_width: float = 2.0  # m
+    lidar_range: float | None = 40.0  # m, None to hide the sensor overlay
+    lidar_fov: float = 0.0  # rad, total field of view centered on heading (0 = forward only)
 
 
 class LiveViewer:
@@ -60,6 +66,8 @@ class LiveViewer:
         self._polylines: TrackPolylines = build_track_polylines(track)
         min_x, max_x, min_y, max_y = self._polylines.bounds
         self.camera.fit_to_bounds(min_x, max_x, min_y, max_y)
+
+        self._car_sprite = CarSprite()
 
         self.is_open = True
         self._hud_lines: list[str] = []
@@ -102,26 +110,48 @@ class LiveViewer:
         return self.is_open
 
     def _draw_car(self, state) -> None:
-        pygame = self._pygame
-        half_l = self.config.car_length / 2
-        half_w = self.config.car_width / 2
-        # car-frame corners (nose = +x), rotated by heading, translated to world pos
-        corners = [(half_l, -half_w), (half_l, half_w), (-half_l, half_w), (-half_l, -half_w)]
-        cos_h, sin_h = _cos_sin(state.heading)
-        world_corners = [
-            (state.x + cx * cos_h - cy * sin_h, state.y + cx * sin_h + cy * cos_h) for cx, cy in corners
-        ]
-        screen_corners = [self.camera.world_to_screen(x, y) for x, y in world_corners]
-        pygame.draw.polygon(self._screen, COLOR_CAR, screen_corners)
+        self._draw_sensor_overlay(state)
 
-        nose_world = (state.x + half_l * 1.3 * cos_h, state.y + half_l * 1.3 * sin_h)
-        pygame.draw.line(
-            self._screen,
-            COLOR_CAR,
-            self.camera.world_to_screen(state.x, state.y),
-            self.camera.world_to_screen(*nose_world),
-            width=2,
-        )
+        pygame = self._pygame
+        length_px = self.camera.scale(self.config.car_length)
+        width_px = self.camera.scale(self.config.car_width)
+        sprite = self._car_sprite.get_scaled(pygame, length_px, width_px)
+
+        # pygame.transform.rotate(+angle) turns the image counter-clockwise
+        # as drawn on screen. World heading increases counter-clockwise in
+        # world coordinates, but Camera.world_to_screen flips y, so a world
+        # CCW turn appears CW on screen -- negate to match visually.
+        heading_deg = -math.degrees(state.heading)
+        rotated = pygame.transform.rotate(sprite, heading_deg)
+        rect = rotated.get_rect(center=self.camera.world_to_screen(state.x, state.y))
+        self._screen.blit(rotated, rect)
+
+    def _draw_sensor_overlay(self, state) -> None:
+        """Draw the forward lidar's origin and range as an arc/cone, so the
+        sensor's field of view is visible relative to the car -- not just
+        implied by a hidden max_range number."""
+        if self.config.lidar_range is None:
+            return
+        pygame = self._pygame
+        half_fov = self.config.lidar_fov / 2
+        cos_h, sin_h = _cos_sin(state.heading - half_fov)
+        cos_h2, sin_h2 = _cos_sin(state.heading + half_fov)
+
+        origin_px = self.camera.world_to_screen(state.x, state.y)
+        pygame.draw.circle(self._screen, COLOR_SENSOR_ORIGIN, origin_px, 3)
+
+        if self.config.lidar_fov <= 1e-6:
+            # single forward ray
+            tip_world = (
+                state.x + self.config.lidar_range * math.cos(state.heading),
+                state.y + self.config.lidar_range * math.sin(state.heading),
+            )
+            pygame.draw.line(self._screen, COLOR_SENSOR_RANGE, origin_px, self.camera.world_to_screen(*tip_world), width=1)
+        else:
+            edge1 = (state.x + self.config.lidar_range * cos_h, state.y + self.config.lidar_range * sin_h)
+            edge2 = (state.x + self.config.lidar_range * cos_h2, state.y + self.config.lidar_range * sin_h2)
+            pygame.draw.line(self._screen, COLOR_SENSOR_RANGE, origin_px, self.camera.world_to_screen(*edge1), width=1)
+            pygame.draw.line(self._screen, COLOR_SENSOR_RANGE, origin_px, self.camera.world_to_screen(*edge2), width=1)
 
     def _draw_hud(self) -> None:
         for i, line in enumerate(self._hud_lines):

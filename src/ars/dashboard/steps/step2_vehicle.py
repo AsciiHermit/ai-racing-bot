@@ -5,11 +5,25 @@ configurable yet (v1.1 backlog): only one lidar, always forward-facing.
 """
 from __future__ import annotations
 
+import math
+
 from ars.dashboard.screen import Screen
-from ars.dashboard.widgets import COLOR_LABEL, COLOR_TITLE, NumberField, Rect
+from ars.dashboard.widgets import (
+    COLOR_LABEL,
+    COLOR_MEASUREMENT,
+    COLOR_PANEL_BORDER,
+    COLOR_TITLE,
+    NumberField,
+    Rect,
+)
+from ars.viz.camera import Camera
+from ars.viz.car_sprite import CarSprite
 
 FIELD_W = 200
 FIELD_H = 32
+
+PREVIEW_AREA = (60, 460, 880, 190)  # x, y, w, h
+COLOR_SENSOR_RANGE = (255, 210, 90)
 
 
 class VehicleScreen(Screen):
@@ -18,6 +32,7 @@ class VehicleScreen(Screen):
     def __init__(self, app):
         super().__init__(app)
         self._fields: list[NumberField] = []
+        self._car_sprite = CarSprite()
 
     def on_enter(self) -> None:
         v = self.config.vehicle
@@ -64,3 +79,46 @@ class VehicleScreen(Screen):
             "Multiple / configurable sensor types are v1.1+ -- not available yet.", True, COLOR_LABEL
         )
         screen.blit(note, (60, 420))
+
+        self._draw_preview(screen)
+
+    def _draw_preview(self, screen) -> None:
+        """Top-down preview: car drawn to its configured length/width,
+        with the forward lidar's range drawn to the same scale -- so
+        changing a field visibly changes the picture, not just a number."""
+        pygame = self.app.pygame
+        px, py, pw, ph = PREVIEW_AREA
+        pygame.draw.rect(screen, (14, 15, 18), (px, py, pw, ph), border_radius=6)
+        pygame.draw.rect(screen, COLOR_PANEL_BORDER, (px, py, pw, ph), width=1, border_radius=6)
+
+        header = self.app.label_font.render("PREVIEW (top-down, to scale)", True, COLOR_TITLE)
+        screen.blit(header, (px + 10, py + 8))
+
+        v = self.config.vehicle
+        lidar = self.config.lidar
+
+        # Camera framed on the car + its sensor range, so the whole ray
+        # fits in the panel regardless of the configured range/length.
+        camera = Camera(screen_width=pw, screen_height=ph - 30)
+        half_extent = max(v.length_m, lidar.max_range_m) * 1.15
+        camera.fit_to_bounds(-v.length_m, half_extent, -half_extent * 0.4, half_extent * 0.4, margin=1.0)
+        origin = (px, py + 30)
+
+        def to_screen(x: float, y: float) -> tuple[int, int]:
+            sx, sy = camera.world_to_screen(x, y)
+            return sx + origin[0], sy + origin[1]
+
+        # lidar ray, forward along +x (car-local nose direction)
+        ray_end = to_screen(lidar.max_range_m, 0.0)
+        car_nose = to_screen(v.length_m / 2, 0.0)
+        pygame.draw.line(screen, COLOR_SENSOR_RANGE, car_nose, ray_end, width=2)
+        range_label = self.app.small_font.render(f"{lidar.max_range_m:.0f} m", True, COLOR_SENSOR_RANGE)
+        screen.blit(range_label, (ray_end[0] - range_label.get_width() // 2, ray_end[1] - 20))
+
+        # car sprite, nose at +x, centered at world origin
+        length_px = camera.scale(v.length_m)
+        width_px = camera.scale(v.width_m)
+        sprite = self._car_sprite.get_scaled(pygame, length_px, width_px)
+        rect = sprite.get_rect(center=to_screen(0.0, 0.0))
+        screen.blit(sprite, rect)
+        pygame.draw.circle(screen, COLOR_SENSOR_RANGE, car_nose, 3)

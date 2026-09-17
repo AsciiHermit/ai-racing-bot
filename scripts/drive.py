@@ -8,7 +8,7 @@ window to quit. Requires the `viz` extra (pip install -e ".[viz]").
 from __future__ import annotations
 
 from ars.env import make_default_env
-from ars.viz import LiveViewer
+from ars.viz import LiveViewer, ViewerConfig
 from ars.viz.keyboard_control import read_keyboard_action
 
 
@@ -16,7 +16,9 @@ def main() -> None:
     env = make_default_env(off_track_terminates=False, max_episode_steps=100_000)
     obs, info = env.reset()
 
-    viewer = LiveViewer(env.track)
+    lidar_sensor = [s for s in env.sensors if s.name == "lidar"][0]
+    viewer_config = ViewerConfig(lidar_range=lidar_sensor.max_range, lidar_fov=lidar_sensor.fov)
+    viewer = LiveViewer(env.track, config=viewer_config)
     pygame = viewer.pygame
 
     running = True

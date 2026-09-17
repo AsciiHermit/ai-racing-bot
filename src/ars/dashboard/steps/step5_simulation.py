@@ -55,7 +55,13 @@ class SimulationScreen(Screen):
 
         env, agent = build_env_and_agent(self.config)
         env.reset()
-        viewer = LiveViewer(env.track, config=ViewerConfig())
+        viewer_config = ViewerConfig(
+            car_length=self.config.vehicle.length_m,
+            car_width=self.config.vehicle.width_m,
+            lidar_range=self.config.lidar.max_range_m,
+            lidar_fov=self.config.lidar.fov_rad,
+        )
+        viewer = LiveViewer(env.track, config=viewer_config)
 
         running = True
         while running:

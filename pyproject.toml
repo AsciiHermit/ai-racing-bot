@@ -28,5 +28,8 @@ viz = [
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+"ars.viz" = ["assets/*.jpg"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]

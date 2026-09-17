@@ -83,9 +83,12 @@ python scripts/smoke_test.py
 ## Visualization
 
 `ars.viz.LiveViewer` opens a pygame window and renders the track (boundaries
-+ centerline) and car live, each frame reading only `env.track` and
-`env.vehicle_state` -- it doesn't know or care which physics/track
-implementation is behind those. Drive it yourself with the keyboard:
++ centerline), the car (top-down F1 sprite, `ars/viz/assets/f1_car_top_down.jpg`,
+scaled to the configured length/width and rotated to match heading), and the
+forward lidar's range as a line from the car's nose -- each frame reading
+only `env.track` and `env.vehicle_state`, plus `ViewerConfig.lidar_range`/
+`lidar_fov` for the sensor overlay. It doesn't know or care which physics/
+track implementation is behind those. Drive it yourself with the keyboard:
 
 ```bash
 python scripts/drive.py
@@ -112,8 +115,10 @@ Five steps, Next/Back to move between them (`ars/dashboard/steps/`):
 1. **Track** -- visualizer only, no config. v1 has one fixed track (simple
    oval); shows total length, per-segment length, turn radius, track width.
 2. **Vehicle** -- mass, length, width (numeric fields), plus the one fixed
-   v1 sensor (forward lidar) with its range editable. Sensor count/type
-   isn't configurable yet.
+   v1 sensor (forward lidar) with its range editable. A live top-down
+   preview shows the car sprite and the lidar range drawn to scale, so
+   editing a field visibly changes the picture. Sensor count/type isn't
+   configurable yet.
 3. **Physics** -- placeholder. v1 has one physics model and no tunable
    params; becomes a real model picker once the 4-wheel F1 physics lands.
 4. **Agent** -- v1 ships one option, `DummyExpertAgent` (`ars/agents/dummy_expert.py`):

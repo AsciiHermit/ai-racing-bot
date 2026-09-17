@@ -14,9 +14,11 @@ from ars.track import make_simple_oval
 
 def make_default_env(**kwargs) -> RacingEnv:
     """v1 default: kinematic-bicycle stub physics, simple oval track,
-    pose + proprioceptive + lidar sensors. Swap any piece by constructing
-    RacingEnv directly instead of using this factory."""
+    pose + proprioceptive + a single forward lidar ray -- matches the v1
+    spec (ars.dashboard.config.LidarConfig default: num_rays=1, fov=0).
+    Swap any piece by constructing RacingEnv directly instead of using
+    this factory."""
     physics = KinematicBicyclePhysics()
     track = make_simple_oval()
-    sensors = [TrackPoseSensor(), ProprioceptiveSensor(), LidarSensor()]
+    sensors = [TrackPoseSensor(), ProprioceptiveSensor(), LidarSensor(num_rays=1, fov=0.0)]
     return RacingEnv(physics=physics, track=track, sensors=sensors, **kwargs)
