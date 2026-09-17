@@ -25,6 +25,9 @@ class TrackPoseSensor:
         )
         return SensorFrame(readings={self.name: reading})
 
+    def reset(self, state: VehicleState) -> None:
+        pass  # stateless -- nothing to reset
+
 
 def _wrap(angle: float) -> float:
     import math

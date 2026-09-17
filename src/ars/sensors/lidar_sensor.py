@@ -39,6 +39,9 @@ class LidarSensor:
             distances[i] = self._cast(state.x, state.y, ray_heading, track)
         return SensorFrame(readings={self.name: distances})
 
+    def reset(self, state: VehicleState) -> None:
+        pass  # stateless -- nothing to reset
+
     def _cast(self, x: float, y: float, heading: float, track: Track) -> float:
         dx = math.cos(heading)
         dy = math.sin(heading)

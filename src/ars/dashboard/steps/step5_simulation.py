@@ -29,7 +29,7 @@ class SimulationScreen(Screen):
         lines = [
             f"Track:     Simple Oval",
             f"Vehicle:   {v.mass_kg:.0f} kg, {v.length_m:.1f} x {v.width_m:.1f} m",
-            f"Sensors:   Forward Lidar (range {lidar.max_range_m:.0f} m)",
+            f"Sensors:   Forward Lidar (range {lidar.max_range_m:.0f} m), GPS, IMU",
             f"Physics:   {self.config.physics.model_name}",
             f"Agent:     Dummy Expert (line follower)",
         ]

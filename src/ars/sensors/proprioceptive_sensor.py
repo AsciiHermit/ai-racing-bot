@@ -19,3 +19,6 @@ class ProprioceptiveSensor:
             dtype=np.float64,
         )
         return SensorFrame(readings={self.name: reading})
+
+    def reset(self, state: VehicleState) -> None:
+        pass  # stateless -- nothing to reset

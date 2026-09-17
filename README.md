@@ -33,7 +33,7 @@ swapped without touching the others -- e.g. the physics teammate can replace
 |---|---|---|
 | `ars/physics` | Vehicle dynamics | `KinematicBicyclePhysics` stub in place -- **replace with real EV physics** |
 | `ars/track` | Track geometry | `FixedLoopTrack` + `make_simple_oval()` -- simple loop, no banking |
-| `ars/sensors` | Observations | `TrackPoseSensor`, `ProprioceptiveSensor`, `LidarSensor` |
+| `ars/sensors` | Observations | `GpsSensor`, `ImuSensor` (localization), `TrackPoseSensor`, `ProprioceptiveSensor`, `LidarSensor` |
 | `ars/env` | Gym integration | `RacingEnv`, registered as `ARS-Racing-v0` |
 | `ars/agents` | RL agents | `RandomAgent`, `DummyExpertAgent` (hand-coded line follower) |
 | `ars/viz` | Visualization | `LiveViewer` (pygame) -- track + car rendered live |
@@ -158,10 +158,39 @@ they work without a display, e.g. in CI.
   `sample_at_s(s) -> TrackSample`, `is_on_track(x, y) -> bool`.
 - **`Sensor`**: `read(state, track) -> SensorFrame`, contributes one named
   array. The env concatenates whatever sensor list it's given, in order --
-  observation space shape follows automatically.
+  observation space shape follows automatically. Also `reset(state) ->
+  None`, called once per episode by `RacingEnv.reset()` before the first
+  `read()` -- a no-op for stateless sensors, but required for any sensor
+  that carries memory across steps (e.g. `ImuSensor` integrating
+  acceleration from consecutive velocities -- without this hook, the
+  first reading of a new episode would difference against the previous
+  episode's final velocity and report a spurious spike).
 
 All cross-module data is plain dataclasses/numpy arrays from `ars/core/types.py`
 -- never a module's internal representation.
+
+## Sensors (v1 fixed set)
+
+- **`GpsSensor`** -- world position as **real latitude/longitude** (degrees),
+  not raw sim x/y. The track's local `(0, 0)` origin is anchored to an
+  arbitrary real-world lat/lon reference point (`GpsSensor.origin_lat_deg`/
+  `origin_lon_deg`, default: equator/prime meridian) and local meters are
+  converted via the equirectangular (local-tangent-plane) approximation --
+  accurate at track-scale distances. Swap the origin for a real circuit's
+  coordinates to anchor the sim there instead.
+- **`ImuSensor`** -- accelerometer (body-frame `ax`, `ay`) + gyroscope
+  (`yaw_rate`). This is what a real IMU actually measures -- *not*
+  position or velocity. `VehicleState` has no acceleration field, so
+  `ImuSensor` derives it by differencing consecutive `(vx, vy)` readings
+  between calls (`(v_now - v_prev) / dt`), which is why it needs the
+  `reset()` hook above. Velocity/odometry sensing (e.g. wheel speed) is a
+  separate concern, left for the physics teammate's real vehicle model.
+- Both are **ideal/noiseless** for v1 (no jitter, drift, bias, or
+  update-rate limiting) -- ground-truth readings, matching how
+  `TrackPoseSensor`/`ProprioceptiveSensor` already work. A noise model is
+  v1.1+ scope.
+- Lidar, GPS, and IMU are the only sensors in v1 -- multiple/configurable
+  sensor types are explicitly out of scope for now (v1.1 backlog).
 
 ## Scale / real-world units
 

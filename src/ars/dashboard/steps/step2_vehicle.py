@@ -1,7 +1,8 @@
 """Step 2: Vehicle config + sensors. v1 lets the user set mass and rough
-dimensions (consumed by physics/rendering), and shows the one fixed sensor
--- a forward lidar -- with its range editable. Sensor count/type is not
-configurable yet (v1.1 backlog): only one lidar, always forward-facing.
+dimensions (consumed by physics/rendering), and shows the fixed v1 sensor
+set: a forward lidar (range editable), plus GPS + IMU for localization
+(ideal/noiseless, no config yet -- see ars.sensors.GpsSensor/ImuSensor).
+Sensor count/type is not otherwise configurable yet (v1.1 backlog).
 """
 from __future__ import annotations
 
@@ -61,13 +62,13 @@ class VehicleScreen(Screen):
         for field in self._fields[:3]:
             field.draw(screen, self.app.pygame, self.app.body_font, self.app.label_font)
 
-        section2 = self.app.body_font.render("SENSORS  (v1: exactly one forward lidar, fixed)", True, COLOR_TITLE)
+        section2 = self.app.body_font.render("SENSORS  (v1 fixed set)", True, COLOR_TITLE)
         screen.blit(section2, (560, 120))
 
         info_lines = [
-            "Type:      Forward Lidar",
-            "Rays:      1 (straight ahead)",
-            "Direction: fixed, aligned with heading",
+            "Forward Lidar -- 1 ray, straight ahead, fixed direction",
+            "GPS   -- world position as lat/lon (ideal, no noise)",
+            "IMU   -- accelerometer + gyroscope (ideal, no noise)",
         ]
         for i, line in enumerate(info_lines):
             surface = self.app.label_font.render(line, True, COLOR_LABEL)
@@ -76,7 +77,9 @@ class VehicleScreen(Screen):
         self._fields[3].draw(screen, self.app.pygame, self.app.body_font, self.app.label_font)
 
         note = self.app.small_font.render(
-            "Multiple / configurable sensor types are v1.1+ -- not available yet.", True, COLOR_LABEL
+            "Multiple / configurable sensor types, and sensor noise, are v1.1+ -- not available yet.",
+            True,
+            COLOR_LABEL,
         )
         screen.blit(note, (60, 420))
 

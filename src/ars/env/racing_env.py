@@ -72,6 +72,8 @@ class RacingEnv(gym.Env):
         self._steps = 0
         self._prev_s = 0.0
         self._lap = 0
+        for sensor in self.sensors:
+            sensor.reset(self._state)
         obs = self._build_obs(self._state)
         info = {"progress_s": 0.0, "lap": 0}
         return obs, info

@@ -61,3 +61,11 @@ class Sensor(Protocol):
 
     def read(self, state: VehicleState, track: Track) -> SensorFrame:
         ...
+
+    def reset(self, state: VehicleState) -> None:
+        """Called once per episode reset, before the first read(). Default
+        no-op -- only sensors with internal memory across steps (e.g. an
+        IMU integrating acceleration from consecutive velocities) need to
+        override this, to avoid carrying stale state across episodes.
+        Stateless sensors (Lidar, TrackPose, Proprioceptive) can ignore it."""
+        ...
