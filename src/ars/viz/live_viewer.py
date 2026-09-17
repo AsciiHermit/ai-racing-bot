@@ -128,8 +128,13 @@ class LiveViewer:
             surface = self._font.render(line, True, COLOR_TEXT)
             self._screen.blit(surface, (10, 10 + i * 20))
 
-    def close(self) -> None:
-        self._pygame.quit()
+    def close(self, quit_pygame: bool = True) -> None:
+        """quit_pygame=False when a caller (e.g. the dashboard) owns the
+        pygame session and will keep using it after this viewer closes --
+        pygame.quit() tears down the whole subsystem (display, fonts,
+        events), not just this window."""
+        if quit_pygame:
+            self._pygame.quit()
         self.is_open = False
 
 

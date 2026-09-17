@@ -32,6 +32,20 @@ Segment = Straight | Arc
 
 
 @dataclass
+class SegmentInfo:
+    """Public, read-only summary of one resolved segment -- for UI/labeling
+    (e.g. the track visualizer). Not used internally; see _ResolvedSegment
+    for the full geometry the track math actually runs on."""
+
+    kind: str  # "straight" | "arc"
+    length: float  # m (arc length for arcs)
+    s_start: float
+    s_end: float
+    radius: float | None = None  # m, signed; None for straights
+    angle: float | None = None  # rad, unsigned sweep; None for straights
+
+
+@dataclass
 class _ResolvedSegment:
     kind: str  # "straight" | "arc"
     s_start: float
@@ -180,6 +194,26 @@ class FixedLoopTrack:
     def is_on_track(self, x: float, y: float) -> bool:
         sample = self.query(x, y)
         return abs(sample.lateral_offset) <= sample.width / 2.0
+
+    def segments(self) -> list[SegmentInfo]:
+        """Public read-only segment list, e.g. for a track visualizer that
+        wants to label each straight/turn's length and radius."""
+        result = []
+        for seg in self._segments:
+            if seg.kind == "straight":
+                result.append(SegmentInfo(kind="straight", length=seg.length, s_start=seg.s_start, s_end=seg.s_end))
+            else:
+                result.append(
+                    SegmentInfo(
+                        kind="arc",
+                        length=seg.length,
+                        s_start=seg.s_start,
+                        s_end=seg.s_end,
+                        radius=seg.radius,
+                        angle=seg.length / abs(seg.radius),
+                    )
+                )
+        return result
 
 
 def _project_onto_segment(seg: _ResolvedSegment, x: float, y: float) -> tuple[float, float]:

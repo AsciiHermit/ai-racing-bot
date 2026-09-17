@@ -45,3 +45,20 @@ def test_straight_has_zero_curvature():
     track = make_simple_oval()
     sample = track.sample_at_s(1.0)
     assert sample.curvature == pytest.approx(0.0)
+
+
+def test_segments_lengths_sum_to_track_length():
+    track = make_simple_oval()
+    segments = track.segments()
+    assert sum(seg.length for seg in segments) == pytest.approx(track.length)
+
+
+def test_segments_report_kind_and_radius():
+    track = make_simple_oval(straight_length=80.0, turn_radius=25.0)
+    segments = track.segments()
+    kinds = [seg.kind for seg in segments]
+    assert kinds == ["straight", "arc", "straight", "arc"]
+    arc_segments = [seg for seg in segments if seg.kind == "arc"]
+    for seg in arc_segments:
+        assert seg.radius == pytest.approx(25.0)
+        assert seg.angle == pytest.approx(math.pi)

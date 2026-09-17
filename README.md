@@ -18,6 +18,7 @@ ars/sensors/    Observation sources -- implement Sensor
 ars/env/        Gymnasium env wrapper -- composes the three above
 ars/agents/     RL agents (baseline + novel algorithm)
 ars/viz/        Optional pygame live viewer -- reads env.track/env.vehicle_state only
+ars/dashboard/  5-step setup GUI (Track -> Vehicle -> Physics -> Agent -> Simulation)
 ```
 
 Because everything is typed against the Protocols, any implementation can be
@@ -34,8 +35,9 @@ swapped without touching the others -- e.g. the physics teammate can replace
 | `ars/track` | Track geometry | `FixedLoopTrack` + `make_simple_oval()` -- simple loop, no banking |
 | `ars/sensors` | Observations | `TrackPoseSensor`, `ProprioceptiveSensor`, `LidarSensor` |
 | `ars/env` | Gym integration | `RacingEnv`, registered as `ARS-Racing-v0` |
-| `ars/agents` | RL agents | `RandomAgent` baseline only so far |
+| `ars/agents` | RL agents | `RandomAgent`, `DummyExpertAgent` (hand-coded line follower) |
 | `ars/viz` | Visualization | `LiveViewer` (pygame) -- track + car rendered live |
+| `ars/dashboard` | Setup GUI | `DashboardApp` -- 5-step config + run flow, see below |
 
 ## Install
 
@@ -96,6 +98,39 @@ To render an agent's rollout instead of driving manually, call
 see `scripts/drive.py` for the pattern (poll events, step env, set HUD text,
 draw).
 
+## Dashboard (setup GUI)
+
+A step-by-step pygame GUI for configuring and launching a run, so a user
+doesn't need to write Python to try the simulator:
+
+```bash
+python scripts/dashboard.py
+```
+
+Five steps, Next/Back to move between them (`ars/dashboard/steps/`):
+
+1. **Track** -- visualizer only, no config. v1 has one fixed track (simple
+   oval); shows total length, per-segment length, turn radius, track width.
+2. **Vehicle** -- mass, length, width (numeric fields), plus the one fixed
+   v1 sensor (forward lidar) with its range editable. Sensor count/type
+   isn't configurable yet.
+3. **Physics** -- placeholder. v1 has one physics model and no tunable
+   params; becomes a real model picker once the 4-wheel F1 physics lands.
+4. **Agent** -- v1 ships one option, `DummyExpertAgent` (`ars/agents/dummy_expert.py`):
+   a hand-coded, non-learned line-following controller (steers toward
+   centerline, eases off throttle in turns). "Bring your own RL agent" /
+   "train it" are named in the UI as the intended v1.1+ paths.
+5. **Simulation** -- read-only summary of steps 1-4, plus a **Run** button
+   that builds the env + agent from your choices (`ars/dashboard/builder.py`)
+   and opens the live viewer, agent-driving instead of keyboard-driving.
+   Esc or close that window to return to the dashboard.
+
+`SessionConfig` (`ars/dashboard/config.py`) is the plain-dataclass state
+that accumulates across steps -- Back never loses what you entered. Each
+`Screen` subclass only touches its own slice of it, so adding a new
+configurable field (e.g. once physics gets real params) means editing one
+step's screen, not the whole flow.
+
 ## Testing
 
 ```bash
@@ -103,9 +138,10 @@ pytest
 ```
 
 Each module has its own test directory (`tests/physics`, `tests/track`,
-`tests/sensors`, `tests/env`, `tests/viz`) so a teammate can run and iterate
-on just their module: `pytest tests/physics -q`. `tests/viz` runs headless
-(SDL dummy video driver) so it works without a display, e.g. in CI.
+`tests/sensors`, `tests/env`, `tests/viz`, `tests/dashboard`, `tests/agents`)
+so a teammate can run and iterate on just their module: `pytest tests/physics -q`.
+`tests/viz` and `tests/dashboard` run headless (SDL dummy video driver) so
+they work without a display, e.g. in CI.
 
 ## Contract details
 

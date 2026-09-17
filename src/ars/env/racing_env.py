@@ -87,7 +87,7 @@ class RacingEnv(gym.Env):
         off_track = abs(sample.lateral_offset) > sample.width / 2.0
 
         ds = _progress_delta(self._prev_s, sample.s, self.track.length)
-        if ds > self.track.length * 0.5:
+        if _crossed_finish_line_forward(self._prev_s, sample.s, self.track.length):
             self._lap += 1
         self._prev_s = sample.s
 
@@ -121,3 +121,12 @@ def _progress_delta(prev_s: float, new_s: float, track_length: float) -> float:
     elif delta > track_length / 2:
         delta -= track_length
     return delta
+
+
+def _crossed_finish_line_forward(prev_s: float, new_s: float, track_length: float) -> bool:
+    """True if progress moved forward across s=track_length -> s=0 this
+    step (a completed lap), i.e. raw s dropped by more than half the track
+    -- as opposed to _progress_delta's return value, which is already
+    wraparound-corrected into [-length/2, length/2] and so can never
+    exceed that range itself."""
+    return (new_s - prev_s) < -track_length / 2

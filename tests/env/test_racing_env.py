@@ -46,6 +46,19 @@ def test_episode_truncates_at_max_steps():
     assert truncated
 
 
+def test_lap_increments_on_wraparound():
+    # Regression test: _progress_delta clamps to [-length/2, length/2], so
+    # comparing its already-clamped output against length/2 (the original
+    # bug) can never trigger -- lap count silently stayed 0 forever.
+    env = make_default_env(off_track_terminates=False, max_episode_steps=5000)
+    env.reset()
+    action = np.array([1.0, 0.0, 0.05], dtype=np.float32)  # mild turn, stays near centerline
+    info = {}
+    for _ in range(5000):
+        _, _, _, _, info = env.step(action)
+    assert info["lap"] >= 1
+
+
 def test_gym_registration():
     import gymnasium as gym
 
