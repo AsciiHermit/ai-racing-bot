@@ -39,21 +39,91 @@ swapped without touching the others -- e.g. the physics teammate can replace
 | `ars/viz` | Visualization | `LiveViewer` (pygame) -- track + car rendered live |
 | `ars/dashboard` | Setup GUI | `DashboardApp` -- 5-step config + run flow, see below |
 
-## Install
+**If you're picking up the physics/vehicle-dynamics work, read
+[PHYSICS.md](PHYSICS.md) instead of starting from this README** -- it's a
+dedicated handoff doc covering exactly what the current placeholder does
+and doesn't do, the interface you need to satisfy, and the open design
+question you'll hit early (how a 4-wheel state type fits into the shared
+`VehicleState`).
 
-**Use Python 3.12**, not 3.14 -- `pygame` (the `viz` extra) has no prebuilt
-wheel for 3.14 yet and fails to build from source without a full MSVC
-toolchain. This repo's `.venv` is already set up on 3.12; to recreate it:
+## Setup (clone + install)
+
+**Requires Python 3.12.** `pygame` (the `viz` extra, needed for the live
+viewer and dashboard) has no prebuilt wheel for Python 3.13/3.14 yet and
+fails to build from source unless you have a full MSVC toolchain installed
+-- save yourself the trouble and use 3.12.
+
+### 1. Clone the repo
 
 ```bash
-py install 3.12          # if not already installed
-py -3.12 -m venv .venv
-.venv\Scripts\pip install -e ".[dev,viz]"
+git clone https://github.com/<your-org>/ars.git
+cd ars
 ```
 
-Everyone on the team should use `.venv` (or their own 3.12 venv) rather than
-whatever `python` resolves to on PATH -- this machine had multiple Python
-installs and that caused real confusion earlier.
+### 2. Get Python 3.12
+
+Check what you have first:
+
+```bash
+python3.12 --version   # macOS/Linux
+py -3.12 --version     # Windows
+```
+
+If that fails, install it:
+
+- **Windows**: `py install 3.12` (via the [py launcher](https://docs.python.org/3/using/windows.html#the-python-launcher-for-windows)), or download from [python.org](https://www.python.org/downloads/).
+- **macOS**: `brew install python@3.12`, or download from [python.org](https://www.python.org/downloads/).
+- **Linux**: `sudo apt install python3.12 python3.12-venv` (Debian/Ubuntu) or your distro's equivalent.
+
+If your system already has multiple Python versions installed, always use
+a **virtual environment** (below) rather than relying on whichever `python`
+resolves first on `PATH` -- mixing installs is a common source of "works
+for me" bugs across a team.
+
+### 3. Create a virtual environment and install
+
+```bash
+# Windows
+py -3.12 -m venv .venv
+.venv\Scripts\pip install -e ".[dev,viz]"
+
+# macOS/Linux
+python3.12 -m venv .venv
+.venv/bin/pip install -e ".[dev,viz]"
+```
+
+This installs the package in editable mode (code changes take effect
+immediately, no reinstall needed) plus:
+- `dev` -- `pytest`, for running the test suite
+- `viz` -- `pygame`, for the live viewer and setup dashboard
+
+Everyone on the team should use their own `.venv` (already gitignored)
+rather than a shared/system Python.
+
+### 4. Verify it worked
+
+```bash
+# Windows
+.venv\Scripts\python -m pytest -q
+
+# macOS/Linux
+.venv/bin/python -m pytest -q
+```
+
+All tests should pass. Then try the dashboard (see [below](#dashboard-setup-gui)):
+
+```bash
+# Windows
+.venv\Scripts\python scripts\dashboard.py
+
+# macOS/Linux
+.venv/bin/python scripts/dashboard.py
+```
+
+The rest of this README uses bare `python`/`pytest` for brevity -- substitute
+`.venv\Scripts\python` / `.venv/bin/python` (or activate the venv first:
+`.venv\Scripts\activate` on Windows, `source .venv/bin/activate` on
+macOS/Linux) for whichever your shell needs.
 
 ## Quickstart
 
@@ -221,19 +291,10 @@ the limit tops out at exactly 4.5g through the tightest turns, never above.
   cap, not a real tire curve) so the rest of the stack has something to run
   against on day one. **The real target is a 4-wheel F1-style vehicle**
   (independent wheel loads/slip, Pacejka-style tire model, aero) -- this is
-  Module A's real work, still open.
-
-  Open design question for whoever builds it: `VehicleState` (`ars/core/types.py`)
-  currently only has chassis-level fields (x, y, heading, vx, vy, yaw_rate,
-  one steer_angle) -- no room for 4 independent wheels. Decided direction:
-  the physics module will own a richer state type of its own (e.g.
-  `FourWheelVehicleState` with per-wheel slip/load/omega) rather than
-  cramming wheel data into the shared `VehicleState`. That means `ars/env`,
-  `ars/sensors`, and `ars/viz` -- which only need x/y/heading/vx/vy/yaw_rate
-  -- will need a stable way to read those chassis-level fields off whatever
-  state type physics returns, without importing physics-internal types.
-  Not yet implemented; do this before/alongside building the real physics
-  model, not after.
+  Module A's real work, still open. **See [PHYSICS.md](PHYSICS.md)** for
+  the full handoff: what exactly the stub does and doesn't simulate, the
+  interface you need to satisfy, the open `VehicleState` design question,
+  and a suggested incremental path.
 - `ars.track.make_simple_oval()` is a genuine v1 track (two straights, two
   same-direction 180-degree turns) -- not a stub, but intentionally simple.
   A closed loop's turns must sum to a full 2*pi in signed curvature, so this
