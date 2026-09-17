@@ -10,11 +10,14 @@ import os
 
 _ASSET_PATH = os.path.join(os.path.dirname(__file__), "assets", "f1_car_top_down.jpg")
 
-# Source image: car nose points toward -x (left) in the raw file, with a
-# roughly 1198x750px content bounding box inside a 1200x1200 white canvas
-# (measured once at authoring time -- re-measure if the asset changes).
+# Source image: the pointed nose (cockpit visible) already points toward
+# +x (right) in the raw file -- the wide flat block on the left is the
+# rear wing, not the front, so no flip is needed. Content bounding box is
+# roughly 1198x750px inside a 1200x1200 white canvas (measured once at
+# authoring time -- re-measure if the asset changes). Verified by
+# rendering both orientations and visually checking which end is the
+# tapered nose vs. the flat wing.
 _SOURCE_BBOX = (0, 224, 1198, 974)  # left, top, right, bottom
-_SOURCE_FACES_LEFT = True
 
 
 class CarSprite:
@@ -33,9 +36,7 @@ class CarSprite:
         raw = pygame_module.image.load(_ASSET_PATH).convert()
         left, top, right, bottom = _SOURCE_BBOX
         cropped = raw.subsurface(pygame_module.Rect(left, top, right - left, bottom - top)).copy()
-        if _SOURCE_FACES_LEFT:
-            cropped = pygame_module.transform.flip(cropped, True, False)
-        cropped.set_colorkey((255, 255, 255))  # white background -> transparent
+        cropped = _make_white_transparent(cropped, pygame_module)
         self._base_surface = cropped
 
     def get_scaled(self, pygame_module, length_px: int, width_px: int):
@@ -49,3 +50,22 @@ class CarSprite:
             cached = pygame_module.transform.smoothscale(self._base_surface, (length_px, width_px))
             self._cache[key] = cached
         return cached
+
+
+def _make_white_transparent(surface, pygame_module, threshold: int = 235):
+    """Per-pixel alpha, not colorkey: a JPEG's white background has
+    compression noise (near-white, not exactly (255,255,255)), so an exact
+    colorkey leaves a visible whitish halo around the car. Any pixel whose
+    channels are all >= threshold is treated as background. Runs once at
+    load time (cached by CarSprite), so the pixel-by-pixel cost is fine.
+    """
+    surface = surface.convert_alpha()
+    w, h = surface.get_size()
+    surface.lock()
+    for x in range(w):
+        for y in range(h):
+            r, g, b, a = surface.get_at((x, y))
+            if r >= threshold and g >= threshold and b >= threshold:
+                surface.set_at((x, y), (r, g, b, 0))
+    surface.unlock()
+    return surface

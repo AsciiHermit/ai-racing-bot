@@ -117,11 +117,14 @@ class LiveViewer:
         width_px = self.camera.scale(self.config.car_width)
         sprite = self._car_sprite.get_scaled(pygame, length_px, width_px)
 
-        # pygame.transform.rotate(+angle) turns the image counter-clockwise
-        # as drawn on screen. World heading increases counter-clockwise in
-        # world coordinates, but Camera.world_to_screen flips y, so a world
-        # CCW turn appears CW on screen -- negate to match visually.
-        heading_deg = -math.degrees(state.heading)
+        # pygame.transform.rotate(+angle) turns the (nose-facing-+x) sprite
+        # counter-clockwise as drawn on screen: rotate(+90) points the nose
+        # up. World heading also increases counter-clockwise (world +y is
+        # "up" after Camera.world_to_screen's y-flip), so the two match
+        # directly with no sign flip needed -- verified by rendering
+        # heading=0/90/180/270 against a drawn +x/+y reference and checking
+        # the nose lines up with the expected world direction each time.
+        heading_deg = math.degrees(state.heading)
         rotated = pygame.transform.rotate(sprite, heading_deg)
         rect = rotated.get_rect(center=self.camera.world_to_screen(state.x, state.y))
         self._screen.blit(rotated, rect)
