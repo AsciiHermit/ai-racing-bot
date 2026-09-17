@@ -19,10 +19,17 @@ doc goes deep on just the physics side.
   tuned to real F1 reference numbers (top speed, braking, cornering grip)
   so it's *physically bounded* even though it's not *physically simulated*.
 - Your job is to replace `ars/physics/kinematic_stub.py` with a real
-  vehicle model -- most likely a 4-wheel model with a Pacejka-style (or
-  similar) tire curve, load transfer, and aero. There's an open design
-  decision you need to make early (see "The VehicleState problem" below)
-  before you get deep into implementation.
+  **4-wheel vehicle model** -- independent per-wheel slip/load, a
+  Pacejka-style (or similar) tire curve, load transfer, and aero. This is
+  the actual v1 target, not an optional stretch goal -- see "Suggested
+  incremental path" below for how to get there without a giant first PR,
+  but the destination is 4 wheels, not a 2-wheel bicycle model. There's an
+  open design decision you need to make early (see "The VehicleState
+  problem" below) before you get deep into implementation.
+- **Localization sensors (GPS, IMU, lidar, track pose) are not yours** --
+  those are for agent navigation/perception and are owned separately. Your
+  sensor territory, if any, is vehicle-mechanics sensors (wheel speed,
+  tire temp, etc.) -- see "Sensors: what's yours and what isn't" below.
 
 ## The one interface you must satisfy
 
@@ -263,7 +270,7 @@ You do **not** need to touch `ars/env/`, `ars/sensors/`, `ars/viz/`, or
 resolving the `ChassisState` question above, or adding a wheel-speed/
 odometry sensor (see below).
 
-## What sensors already exist vs. what's still yours
+## Sensors: what's yours and what isn't
 
 Current sensor set (`ars/sensors/`), all **ideal/noiseless** for v1:
 
@@ -273,33 +280,50 @@ Current sensor set (`ars/sensors/`), all **ideal/noiseless** for v1:
 - `GpsSensor` -- world position converted to real lat/lon (needs `state.x`, `state.y` only)
 - `ImuSensor` -- accelerometer (`ax`, `ay`, derived by differencing consecutive velocities) + gyroscope (`yaw_rate` straight off `VehicleState`)
 
-**Explicitly NOT built, and explicitly your territory**: velocity/speed
-sensing derived from wheel rotation (odometry). GPS gives position, IMU
-gives acceleration + yaw rate -- neither gives velocity the way a real
-car actually measures it (wheel speed sensors). If/when your 4-wheel
-model has per-wheel angular velocity (`omega` in the `WheelState` sketch
-above), a wheel-speed sensor is a natural sensor for you to add,
-following the existing `Sensor` Protocol pattern (see
-`ars/sensors/imu_sensor.py` for the most similar existing example --
-it's the other sensor that needs `reset()` because it has memory across
-steps).
+**Localization/navigation sensors (GPS, IMU, lidar, track pose) are NOT
+your territory.** These exist so the *agent* can perceive where it is and
+navigate -- that's owned by whoever's doing sensors for agent
+intelligence, not physics. Don't add to, modify, or extend this group
+(no noise model on GPS/IMU, no new lidar configurations, etc.) unless
+that's explicitly handed to you separately.
+
+**What IS yours**: sensors that measure the vehicle's own mechanical
+state -- the stuff a real car's onboard systems measure about itself,
+not about the world around it. The clearest example, and explicitly
+**NOT yet built**: **wheel-speed/odometry sensing** (per-wheel angular
+velocity, `omega` in the `WheelState` sketch above) -- this only makes
+sense once your 4-wheel model exists, and it's naturally yours since it's
+reading data your own physics model produces. Other things in this same
+category if/when they become relevant to your model: tire
+temperature/pressure sensors, brake temperature, suspension travel --
+anything measuring the car's mechanical state rather than its position
+or surroundings.
+
+If you do add a sensor like this, follow the existing `Sensor` Protocol
+pattern (see `ars/sensors/imu_sensor.py` for the closest existing
+example, since it's the other sensor with memory across steps and needs
+`reset()`) -- but keep it scoped to vehicle-mechanics data, not
+navigation/localization data.
 
 ## Suggested incremental path
 
-You don't have to jump straight to a full 4-wheel Pacejka model. A
-reasonable path that keeps something always-running and testable end to
-end:
+The target is a full 4-wheel model -- that's the v1 deliverable, not
+optional. But you don't have to write it in one giant PR. A reasonable
+path that keeps something always-running and testable at every step,
+landing on 4 wheels rather than stopping short of it:
 
-1. **Dynamic bicycle model** -- keep the 2-wheel abstraction, but replace
-   the kinematic assumption (`vy = 0`, no slip) with an actual slip-angle
-   /grip-curve relationship. This still fits in `VehicleState` as-is (no
-   `ChassisState` work needed yet), and is a much smaller step from the
-   current stub.
+1. **Dynamic bicycle model** -- keep the 2-wheel abstraction *temporarily*,
+   but replace the kinematic assumption (`vy = 0`, no slip) with an actual
+   slip-angle/grip-curve relationship. This still fits in `VehicleState`
+   as-is (no `ChassisState` work needed yet), and is a much smaller first
+   step from the current stub than jumping straight to 4 wheels. Treat
+   this as scaffolding you'll replace, not a resting point.
 2. **Add load transfer** -- longitudinal (accel/braking) and lateral
    (cornering) weight transfer changing each "wheel's" (front/rear, in
    the bicycle model) effective grip.
-3. **Go to 4 wheels** -- this is where you need the `VehicleState` /
-   `ChassisState` decision above.
+3. **Go to 4 wheels** -- this is the actual target, and where you need the
+   `VehicleState` / `ChassisState` decision above. Independent per-wheel
+   slip angle, slip ratio, load, and grip.
 4. **Add aero** (drag ∝ v², downforce ∝ v² affecting grip) whenever it
    matters for your research goals.
 
