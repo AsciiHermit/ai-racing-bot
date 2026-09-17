@@ -21,6 +21,9 @@ agents = [
     "stable-baselines3>=2.2",
     "torch>=2.1",
 ]
+viz = [
+    "pygame>=2.5",
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]

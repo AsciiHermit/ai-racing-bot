@@ -103,6 +103,12 @@ class RacingEnv(gym.Env):
         info = {"progress_s": step_info.progress_s, "lap": step_info.lap, "off_track": off_track}
         return obs, reward, terminated, truncated, info
 
+    @property
+    def vehicle_state(self):
+        """Current VehicleState (or physics-module-specific state type),
+        read-only access for renderers/loggers. None before reset()."""
+        return self._state
+
     def render(self):
         return None
 
