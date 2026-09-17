@@ -8,7 +8,7 @@ from __future__ import annotations
 import math
 
 from ars.dashboard.screen import Screen
-from ars.dashboard.widgets import COLOR_LABEL, COLOR_TITLE
+from ars.dashboard.widgets import COLOR_LABEL, COLOR_MEASUREMENT, COLOR_TITLE
 from ars.track import make_simple_oval
 from ars.viz.camera import Camera
 from ars.viz.track_geometry import build_track_polylines
@@ -16,7 +16,6 @@ from ars.viz.track_geometry import build_track_polylines
 COLOR_TRACK_SURFACE = (58, 62, 70)
 COLOR_BOUNDARY = (235, 235, 235)
 COLOR_CENTERLINE = (90, 96, 110)
-COLOR_MEASUREMENT = (140, 200, 255)
 COLOR_MEASUREMENT_LINE = (90, 130, 160)
 
 PLOT_AREA = (30, 90, 640, 520)  # x, y, w, h -- left panel

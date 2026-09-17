@@ -158,13 +158,36 @@ they work without a display, e.g. in CI.
 All cross-module data is plain dataclasses/numpy arrays from `ars/core/types.py`
 -- never a module's internal representation.
 
+## Scale / real-world units
+
+Every length is meters, every mass is kg, every speed is m/s, every angle
+internally is radians (UI labels convert to degrees for display) -- one
+consistent unit system across track, physics, sensors, viz, and dashboard,
+so a value from one module is always directly usable by another with no
+hidden conversion.
+
+Reference values are checked against real F1 (2024-era regs/performance):
+vehicle mass 798 kg, dims 4.5 x 2.0 m, wheelbase 2.6 m all match. Physics
+constants (`ars.physics.KinematicBicycleParams`) are tuned to real F1
+figures: top speed 95 m/s (~342 km/h), max acceleration ~1.2g, max braking
+~5g, **max lateral (cornering) grip ~4.5g**. That last one matters: a
+kinematic bicycle has no tire model, so without an explicit cap the car
+could corner at any speed with zero slip -- e.g. taking the track's 25m-radius
+turns at top speed would imply ~14.7g lateral force, well beyond what real
+tires (or a real car) can generate. `KinematicBicyclePhysics.step()` now
+caps speed so lateral acceleration (`v^2 * curvature`, from the vehicle's
+own steer angle) never exceeds `max_lateral_accel` -- a stand-in for what
+tire slip will eventually enforce for real. Verified: an agent driving at
+the limit tops out at exactly 4.5g through the tightest turns, never above.
+
 ## What's a stub vs. real
 
 - `ars.physics.KinematicBicyclePhysics` is a placeholder (bicycle model, no
-  tire slip, no load transfer, no aero) so the rest of the stack has
-  something to run against on day one. **The real target is a 4-wheel
-  F1-style vehicle** (independent wheel loads/slip, Pacejka-style tire
-  model, aero) -- this is Module A's real work, still open.
+  tire slip, no load transfer, no aero -- lateral grip is a single scalar
+  cap, not a real tire curve) so the rest of the stack has something to run
+  against on day one. **The real target is a 4-wheel F1-style vehicle**
+  (independent wheel loads/slip, Pacejka-style tire model, aero) -- this is
+  Module A's real work, still open.
 
   Open design question for whoever builds it: `VehicleState` (`ars/core/types.py`)
   currently only has chassis-level fields (x, y, heading, vx, vy, yaw_rate,
