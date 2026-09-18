@@ -56,8 +56,8 @@ fails to build from source unless you have a full MSVC toolchain installed
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/<your-org>/ars.git
-cd ars
+git clone https://github.com/AsciiHermit/ai-racing-bot.git
+cd ai-racing-bot
 ```
 
 ### 2. Get Python 3.12
