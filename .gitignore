@@ -7,3 +7,7 @@ dist/
 .venv/
 venv/
 *.log
+
+# Internal working notes for AI assistant sessions -- not project docs,
+# not for the team/public repo.
+claude-notes/
