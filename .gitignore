@@ -8,6 +8,10 @@ dist/
 venv/
 *.log
 
+# Training logs/checkpoints (scripts/train_baseline.py) -- regenerable,
+# not source; large and binary, don't belong in git history.
+runs/
+
 # Internal working notes for AI assistant sessions -- not project docs,
 # not for the team/public repo.
 claude-notes/

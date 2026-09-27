@@ -9,7 +9,7 @@ the objects passed to __init__, not this file.
 from __future__ import annotations
 
 import math
-from typing import Any
+from typing import Any, Callable
 
 import gymnasium as gym
 import numpy as np
@@ -25,19 +25,27 @@ class RacingEnv(gym.Env):
     def __init__(
         self,
         physics: VehiclePhysics,
-        track: Track,
-        sensors: list[Sensor],
+        track: Track | None = None,
+        sensors: list[Sensor] | None = None,
         dt: float = 0.02,
         max_episode_steps: int = 2000,
         off_track_terminates: bool = True,
+        wall_margin: float = 2.0,
+        track_provider: Callable[[], Track] | None = None,
     ):
         super().__init__()
+        if track is None:
+            if track_provider is None:
+                raise ValueError("either track or track_provider must be given")
+            track = track_provider()
         self.physics = physics
         self.track = track
-        self.sensors = sensors
+        self.sensors = sensors or []
         self.dt = dt
         self.max_episode_steps = max_episode_steps
         self.off_track_terminates = off_track_terminates
+        self.wall_margin = wall_margin
+        self.track_provider = track_provider
 
         self.action_space = spaces.Box(
             low=np.array([0.0, 0.0, -1.0], dtype=np.float32),
@@ -67,6 +75,8 @@ class RacingEnv(gym.Env):
 
     def reset(self, *, seed: int | None = None, options: dict[str, Any] | None = None):
         super().reset(seed=seed)
+        if self.track_provider is not None:
+            self.track = self.track_provider()
         start = self.track.sample_at_s(0.0)
         self._state = self.physics.reset(start.centerline_x, start.centerline_y, start.heading)
         self._steps = 0
@@ -87,6 +97,11 @@ class RacingEnv(gym.Env):
 
         sample = self.track.query(self._state.x, self._state.y)
         off_track = abs(sample.lateral_offset) > sample.width / 2.0
+        # A collision is well past off-track: past the track surface AND
+        # its margin, e.g. into a wall/barrier -- distinct from and harsher
+        # than the ordinary off-track penalty below (Phase 3 task list:
+        # "off-track and wall-collision penalties").
+        collided = abs(sample.lateral_offset) > sample.width / 2.0 + self.wall_margin
 
         ds = _progress_delta(self._prev_s, sample.s, self.track.length)
         if _crossed_finish_line_forward(self._prev_s, sample.s, self.track.length):
@@ -96,13 +111,20 @@ class RacingEnv(gym.Env):
         reward = ds - 0.01 * abs(sample.lateral_offset)
         if off_track:
             reward -= 1.0
+        if collided:
+            reward -= 5.0
 
         terminated = off_track and self.off_track_terminates
         truncated = self._steps >= self.max_episode_steps
 
         obs = self._build_obs(self._state)
-        step_info = StepInfo(progress_s=sample.s, lap=self._lap, off_track=off_track)
-        info = {"progress_s": step_info.progress_s, "lap": step_info.lap, "off_track": off_track}
+        step_info = StepInfo(progress_s=sample.s, lap=self._lap, off_track=off_track, collided=collided)
+        info = {
+            "progress_s": step_info.progress_s,
+            "lap": step_info.lap,
+            "off_track": off_track,
+            "collided": collided,
+        }
         return obs, reward, terminated, truncated, info
 
     @property

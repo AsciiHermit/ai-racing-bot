@@ -12,6 +12,9 @@ this module is how it's built and read back.
 """
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 from ars.track.extrapolation import generate_non_elliptical_track, generate_track_with_chicane
 from ars.track.generator import generate_track
 from ars.track.metrics import track_curvature_feature_vector
@@ -29,6 +32,14 @@ _EXTRAPOLATION_GENERATOR_CYCLE = ["generate_track_with_chicane", "generate_non_e
 def build_track(spec: dict) -> SplineTrack:
     fn = _GENERATORS[spec["generator"]]
     return fn(seed=spec["seed"], **spec.get("params", {}))
+
+
+def load_manifest(path: str | Path) -> dict:
+    return json.loads(Path(path).read_text())
+
+
+def tracks_from_specs(specs: list[dict]) -> list[SplineTrack]:
+    return [build_track(spec) for spec in specs]
 
 
 def _make_spec(id_: str, generator: str, seed: int, tier: str, feature_vector: tuple[float, float, float]) -> dict:
