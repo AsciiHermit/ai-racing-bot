@@ -6,18 +6,26 @@ wiring of user choices to concrete objects.
 from __future__ import annotations
 
 from ars.agents import DummyExpertAgent
+from ars.core.interfaces import VehiclePhysics
 from ars.dashboard.config import SessionConfig
 from ars.env.racing_env import RacingEnv
-from ars.physics import KinematicBicyclePhysics
+from ars.physics import DynamicBicyclePhysics, KinematicBicyclePhysics
 from ars.sensors import GpsSensor, ImuSensor, LidarSensor, ProprioceptiveSensor, TrackPoseSensor
 from ars.track import make_simple_oval
 
 _DT = 0.02  # must match the RacingEnv dt below, for ImuSensor's velocity differencing
 
+_PHYSICS_BACKENDS: dict[str, type[VehiclePhysics]] = {
+    "dynamic_bicycle": DynamicBicyclePhysics,
+    "kinematic_stub": KinematicBicyclePhysics,
+}
+
 
 def build_env_and_agent(config: SessionConfig) -> tuple[RacingEnv, DummyExpertAgent]:
     track = make_simple_oval()
-    physics = KinematicBicyclePhysics()  # v1: mass/dims from config not yet consumed by physics
+    # v1: mass/dims from config not yet consumed by physics
+    physics_cls = _PHYSICS_BACKENDS[config.physics.model_name]
+    physics = physics_cls()
     sensors = [
         GpsSensor(),
         ImuSensor(dt=_DT),

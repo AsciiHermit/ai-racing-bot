@@ -26,9 +26,11 @@ class LidarConfig:
 
 @dataclass
 class PhysicsConfig:
-    """v1 placeholder -- no real choice or params yet, one model exists."""
+    """Physics backend choice. "dynamic_bicycle" (Phase 1's slip-based tire
+    model) is the default; "kinematic_stub" is kept as a faster/degenerate
+    option for ablations, not a live tunable-params picker yet."""
 
-    model_name: str = "kinematic_stub (v1 default, no tunable params yet)"
+    model_name: str = "dynamic_bicycle"
 
 
 @dataclass

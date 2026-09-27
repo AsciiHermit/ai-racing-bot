@@ -2,10 +2,21 @@ import numpy as np
 
 from ars.agents import DummyExpertAgent
 from ars.env import make_default_env
+from ars.physics import KinematicBicyclePhysics
+
+# DummyExpertAgent is a reactive-only line-follower (no anticipatory braking
+# before a corner) tuned against the kinematic stub's flat grip cap. Phase 1's
+# dynamic-bicycle model is intentionally harder -- entering a corner too fast
+# now understeers off the track instead of being capped, which is the Phase 0
+# spike's whole point (see PHASE0_SPIKE_NOTE.md), not a regression here.
+# Pinning these tests to the stub keeps them testing DummyExpertAgent's own
+# known-working behavior, decoupled from which physics is the env's default.
 
 
 def test_expert_stays_on_track_for_a_lap():
-    env = make_default_env(off_track_terminates=False, max_episode_steps=5000)
+    env = make_default_env(
+        physics=KinematicBicyclePhysics(), off_track_terminates=False, max_episode_steps=5000
+    )
     env.reset()
     expert = DummyExpertAgent(env.track)
 
@@ -20,7 +31,9 @@ def test_expert_stays_on_track_for_a_lap():
 
 
 def test_expert_completes_at_least_one_lap():
-    env = make_default_env(off_track_terminates=False, max_episode_steps=5000)
+    env = make_default_env(
+        physics=KinematicBicyclePhysics(), off_track_terminates=False, max_episode_steps=5000
+    )
     env.reset()
     expert = DummyExpertAgent(env.track)
 

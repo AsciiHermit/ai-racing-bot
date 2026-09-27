@@ -1,6 +1,7 @@
 import numpy as np
 
 from ars.env import make_default_env
+from ars.physics import KinematicBicyclePhysics
 
 
 def test_reset_returns_obs_matching_space():
@@ -50,7 +51,14 @@ def test_lap_increments_on_wraparound():
     # Regression test: _progress_delta clamps to [-length/2, length/2], so
     # comparing its already-clamped output against length/2 (the original
     # bug) can never trigger -- lap count silently stayed 0 forever.
-    env = make_default_env(off_track_terminates=False, max_episode_steps=5000)
+    # Pinned to the kinematic stub: this test is about the lap-counting
+    # logic, not tire physics, and its fixed action was calibrated against
+    # the stub's grip cap -- Phase 1's dynamic-bicycle model is intentionally
+    # harder and this same fixed action no longer completes a lap under it
+    # (see PHASE0_SPIKE_NOTE.md).
+    env = make_default_env(
+        physics=KinematicBicyclePhysics(), off_track_terminates=False, max_episode_steps=5000
+    )
     env.reset()
     action = np.array([1.0, 0.0, 0.05], dtype=np.float32)  # mild turn, stays near centerline
     info = {}
