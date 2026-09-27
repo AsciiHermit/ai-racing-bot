@@ -1,0 +1,1346 @@
+{
+  "bounding_box": {
+    "mins": [
+      0.0067319207915970455,
+      3.571857017522317e-05,
+      4.760648471772965
+    ],
+    "maxs": [
+      0.01472521744724178,
+      0.0004998994874279894,
+      38.989965262133616
+    ]
+  },
+  "train": [
+    {
+      "id": "train_000",
+      "generator": "generate_track",
+      "seed": 0,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.009464918689395108,
+        8.857711246613584e-05,
+        20.337693496410367
+      ]
+    },
+    {
+      "id": "train_001",
+      "generator": "generate_track",
+      "seed": 1,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.01472521744724178,
+        0.0003435489200882048,
+        8.829984899720001
+      ]
+    },
+    {
+      "id": "train_002",
+      "generator": "generate_track",
+      "seed": 2,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.011935462846779848,
+        0.00025891501426489484,
+        6.79429406253848
+      ]
+    },
+    {
+      "id": "train_003",
+      "generator": "generate_track",
+      "seed": 3,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.012714091093247247,
+        0.0002003997069232273,
+        7.627908212666428
+      ]
+    },
+    {
+      "id": "train_004",
+      "generator": "generate_track",
+      "seed": 4,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.012619049674639405,
+        0.00014005789746241354,
+        16.101661042928814
+      ]
+    },
+    {
+      "id": "train_005",
+      "generator": "generate_track",
+      "seed": 5,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.011198622944761736,
+        0.00016400644543119685,
+        12.749661402963202
+      ]
+    },
+    {
+      "id": "train_006",
+      "generator": "generate_track",
+      "seed": 6,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.010520951811690705,
+        0.00013200130206112129,
+        12.036565938333943
+      ]
+    },
+    {
+      "id": "train_007",
+      "generator": "generate_track",
+      "seed": 7,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.011113164478762263,
+        0.00018662981420210727,
+        9.690136977914142
+      ]
+    },
+    {
+      "id": "train_008",
+      "generator": "generate_track",
+      "seed": 8,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.009586879949676608,
+        0.00015358281101489582,
+        10.27720320767403
+      ]
+    },
+    {
+      "id": "train_009",
+      "generator": "generate_track",
+      "seed": 9,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.010468752163111534,
+        0.00011748921870381829,
+        14.05794294527867
+      ]
+    },
+    {
+      "id": "train_010",
+      "generator": "generate_track",
+      "seed": 10,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.01131153813424889,
+        0.00022423342733388042,
+        11.250472815209712
+      ]
+    },
+    {
+      "id": "train_011",
+      "generator": "generate_track",
+      "seed": 11,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.011383924130086447,
+        0.000178121981610044,
+        12.693121303554577
+      ]
+    },
+    {
+      "id": "train_012",
+      "generator": "generate_track",
+      "seed": 12,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.01062027589538375,
+        0.00014345551718972195,
+        9.284041179448458
+      ]
+    },
+    {
+      "id": "train_013",
+      "generator": "generate_track",
+      "seed": 13,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.01009563878242694,
+        0.00012671305050888292,
+        13.187732662385303
+      ]
+    },
+    {
+      "id": "train_014",
+      "generator": "generate_track",
+      "seed": 14,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.01002347290533441,
+        0.00014264751939392333,
+        12.508112985418919
+      ]
+    },
+    {
+      "id": "train_015",
+      "generator": "generate_track",
+      "seed": 15,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.011240408598849647,
+        0.00014075976835379984,
+        13.686674332739036
+      ]
+    },
+    {
+      "id": "train_016",
+      "generator": "generate_track",
+      "seed": 16,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.0067319207915970455,
+        4.033129198357169e-05,
+        30.686094524736003
+      ]
+    },
+    {
+      "id": "train_017",
+      "generator": "generate_track",
+      "seed": 17,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.010873071623619801,
+        0.00015751328713384445,
+        11.774961337665479
+      ]
+    },
+    {
+      "id": "train_018",
+      "generator": "generate_track",
+      "seed": 18,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.008994296806875012,
+        7.07671595175262e-05,
+        17.0980335970188
+      ]
+    },
+    {
+      "id": "train_019",
+      "generator": "generate_track",
+      "seed": 19,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.01143775846633856,
+        0.000141067323509537,
+        12.289209645626627
+      ]
+    },
+    {
+      "id": "train_020",
+      "generator": "generate_track",
+      "seed": 20,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.010213201188388978,
+        0.00020784255535128744,
+        8.914675837807339
+      ]
+    },
+    {
+      "id": "train_021",
+      "generator": "generate_track",
+      "seed": 21,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.012112487817373107,
+        0.0001480476346936125,
+        13.467750882456539
+      ]
+    },
+    {
+      "id": "train_022",
+      "generator": "generate_track",
+      "seed": 22,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.013781601614683824,
+        0.0003963515692695631,
+        4.760648471772965
+      ]
+    },
+    {
+      "id": "train_023",
+      "generator": "generate_track",
+      "seed": 23,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.01280692636342049,
+        0.00018469506256574072,
+        12.331168941778825
+      ]
+    },
+    {
+      "id": "train_024",
+      "generator": "generate_track",
+      "seed": 24,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.009189700230232127,
+        0.0001422740208196441,
+        9.995437761773827
+      ]
+    },
+    {
+      "id": "train_025",
+      "generator": "generate_track",
+      "seed": 25,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.009432759003810954,
+        7.97316441296063e-05,
+        18.04597071370755
+      ]
+    },
+    {
+      "id": "train_026",
+      "generator": "generate_track",
+      "seed": 26,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.012403282888545948,
+        0.00016081399055495077,
+        13.310781567169434
+      ]
+    },
+    {
+      "id": "train_027",
+      "generator": "generate_track",
+      "seed": 27,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.012310665262630737,
+        0.00023265754322406297,
+        8.734032698983068
+      ]
+    },
+    {
+      "id": "train_028",
+      "generator": "generate_track",
+      "seed": 28,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.0088581709944557,
+        0.00012836599359189243,
+        10.36754639866254
+      ]
+    },
+    {
+      "id": "train_029",
+      "generator": "generate_track",
+      "seed": 29,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.00887328255445399,
+        9.909368477832494e-05,
+        14.97899444872499
+      ]
+    },
+    {
+      "id": "train_030",
+      "generator": "generate_track",
+      "seed": 30,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.01391969324237202,
+        0.0003227440597686476,
+        7.249562738581267
+      ]
+    },
+    {
+      "id": "train_031",
+      "generator": "generate_track",
+      "seed": 31,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.013821294789932931,
+        0.000313062346667251,
+        8.961543994494432
+      ]
+    },
+    {
+      "id": "train_032",
+      "generator": "generate_track",
+      "seed": 32,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.008927191982908136,
+        0.00013181751118387187,
+        10.706186738628556
+      ]
+    },
+    {
+      "id": "train_033",
+      "generator": "generate_track",
+      "seed": 33,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.010783553439618333,
+        0.00012339906880045725,
+        11.51977328574546
+      ]
+    },
+    {
+      "id": "train_034",
+      "generator": "generate_track",
+      "seed": 34,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.010652919939846675,
+        0.00013455229485869366,
+        13.79045274336551
+      ]
+    },
+    {
+      "id": "train_035",
+      "generator": "generate_track",
+      "seed": 35,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.009528715168080971,
+        8.7169598420514e-05,
+        16.390524148121457
+      ]
+    },
+    {
+      "id": "train_036",
+      "generator": "generate_track",
+      "seed": 36,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.007423956899222844,
+        5.1907489636692204e-05,
+        21.272997022416217
+      ]
+    },
+    {
+      "id": "train_037",
+      "generator": "generate_track",
+      "seed": 37,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.01209930252712922,
+        0.00022694428651885514,
+        11.328896294765487
+      ]
+    },
+    {
+      "id": "train_038",
+      "generator": "generate_track",
+      "seed": 38,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.009682548937597334,
+        7.620949878907393e-05,
+        19.829118780329992
+      ]
+    },
+    {
+      "id": "train_039",
+      "generator": "generate_track",
+      "seed": 39,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.010923674608516393,
+        0.00010364746682489683,
+        17.468751856673848
+      ]
+    },
+    {
+      "id": "train_040",
+      "generator": "generate_track",
+      "seed": 40,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.009944935802563885,
+        0.00013322793678251962,
+        12.999047851562771
+      ]
+    },
+    {
+      "id": "train_041",
+      "generator": "generate_track",
+      "seed": 41,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.00903152200741466,
+        6.775613178273852e-05,
+        18.972791392013853
+      ]
+    },
+    {
+      "id": "train_042",
+      "generator": "generate_track",
+      "seed": 42,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.011384406203281464,
+        0.00023465626307346584,
+        9.253551914755409
+      ]
+    },
+    {
+      "id": "train_043",
+      "generator": "generate_track",
+      "seed": 43,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.01036133764477004,
+        0.00016803568544886726,
+        8.818340770002985
+      ]
+    },
+    {
+      "id": "train_044",
+      "generator": "generate_track",
+      "seed": 44,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.010706658297790096,
+        0.00019639551310421063,
+        11.166523400570654
+      ]
+    },
+    {
+      "id": "train_045",
+      "generator": "generate_track",
+      "seed": 45,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.011375967072858637,
+        0.0001908770295579625,
+        11.128099101876758
+      ]
+    },
+    {
+      "id": "train_046",
+      "generator": "generate_track",
+      "seed": 46,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.010671618511638491,
+        0.00022537101786313527,
+        10.087659130438139
+      ]
+    },
+    {
+      "id": "train_047",
+      "generator": "generate_track",
+      "seed": 47,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.011948020105749522,
+        0.00018069947833167962,
+        11.867080453432061
+      ]
+    },
+    {
+      "id": "train_048",
+      "generator": "generate_track",
+      "seed": 48,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.010675108957074205,
+        0.0001409742441882028,
+        14.337692549720362
+      ]
+    },
+    {
+      "id": "train_049",
+      "generator": "generate_track",
+      "seed": 49,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.011944678996070476,
+        0.00017441710538177376,
+        11.093209544068163
+      ]
+    },
+    {
+      "id": "train_050",
+      "generator": "generate_track",
+      "seed": 50,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.010118909084690783,
+        0.00022492910570859505,
+        10.891476055556714
+      ]
+    },
+    {
+      "id": "train_051",
+      "generator": "generate_track",
+      "seed": 51,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.008876334370524404,
+        0.00016988285197645805,
+        8.081461026740104
+      ]
+    },
+    {
+      "id": "train_052",
+      "generator": "generate_track",
+      "seed": 52,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.010523352523840757,
+        0.0001339616564837489,
+        11.64366209785433
+      ]
+    },
+    {
+      "id": "train_053",
+      "generator": "generate_track",
+      "seed": 53,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.010796562890324402,
+        0.00025016140326302236,
+        6.749372740084392
+      ]
+    },
+    {
+      "id": "train_054",
+      "generator": "generate_track",
+      "seed": 54,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.009561701612094135,
+        0.0001899810701844979,
+        7.871828020959554
+      ]
+    },
+    {
+      "id": "train_055",
+      "generator": "generate_track",
+      "seed": 55,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.010041895454549865,
+        0.00012461307312501484,
+        14.990552400774865
+      ]
+    },
+    {
+      "id": "train_056",
+      "generator": "generate_track",
+      "seed": 56,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.008934202902460104,
+        0.00011380698268186709,
+        14.69291641776722
+      ]
+    },
+    {
+      "id": "train_057",
+      "generator": "generate_track",
+      "seed": 57,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.009127945259474097,
+        0.00011916983443491274,
+        11.945901466897745
+      ]
+    },
+    {
+      "id": "train_058",
+      "generator": "generate_track",
+      "seed": 58,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.009700176101048046,
+        0.00016735040448539952,
+        12.890069513803587
+      ]
+    },
+    {
+      "id": "train_059",
+      "generator": "generate_track",
+      "seed": 59,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.014267456089743167,
+        0.0004998994874279894,
+        5.61074335110584
+      ]
+    },
+    {
+      "id": "train_060",
+      "generator": "generate_track",
+      "seed": 60,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.009139942080453593,
+        5.9321258973760944e-05,
+        26.004333111421314
+      ]
+    },
+    {
+      "id": "train_061",
+      "generator": "generate_track",
+      "seed": 61,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.008280926945258633,
+        7.075499022397242e-05,
+        19.060750946570426
+      ]
+    },
+    {
+      "id": "train_062",
+      "generator": "generate_track",
+      "seed": 62,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.011898273000282006,
+        0.00017301625816020004,
+        13.447559175608466
+      ]
+    },
+    {
+      "id": "train_063",
+      "generator": "generate_track",
+      "seed": 63,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.009656438367066684,
+        0.0001277568074031252,
+        14.59749531245411
+      ]
+    },
+    {
+      "id": "train_064",
+      "generator": "generate_track",
+      "seed": 64,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.00821696777525314,
+        3.945495015022225e-05,
+        26.207656887479867
+      ]
+    },
+    {
+      "id": "train_065",
+      "generator": "generate_track",
+      "seed": 65,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.010805716767715069,
+        0.0001457058247282416,
+        9.964650556322946
+      ]
+    },
+    {
+      "id": "train_066",
+      "generator": "generate_track",
+      "seed": 66,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.00716093767116633,
+        3.571857017522317e-05,
+        38.989965262133616
+      ]
+    },
+    {
+      "id": "train_067",
+      "generator": "generate_track",
+      "seed": 67,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.011160266141531481,
+        0.00023652116714114338,
+        8.973352721089167
+      ]
+    },
+    {
+      "id": "train_068",
+      "generator": "generate_track",
+      "seed": 68,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.008393283362991603,
+        9.241445811811275e-05,
+        12.915590468267494
+      ]
+    },
+    {
+      "id": "train_069",
+      "generator": "generate_track",
+      "seed": 69,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.009784793909589931,
+        7.601095961266591e-05,
+        20.580656403993594
+      ]
+    },
+    {
+      "id": "train_070",
+      "generator": "generate_track",
+      "seed": 70,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.011615834786962858,
+        0.00023885082457237835,
+        10.336287946518329
+      ]
+    },
+    {
+      "id": "train_071",
+      "generator": "generate_track",
+      "seed": 71,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.009018175856385558,
+        7.982824004261391e-05,
+        19.110658870703404
+      ]
+    },
+    {
+      "id": "train_072",
+      "generator": "generate_track",
+      "seed": 72,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.009428515999082187,
+        0.00011674431473493415,
+        18.258068546626046
+      ]
+    },
+    {
+      "id": "train_073",
+      "generator": "generate_track",
+      "seed": 73,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.010423149407866334,
+        0.00012814342708968073,
+        12.425011583973674
+      ]
+    },
+    {
+      "id": "train_074",
+      "generator": "generate_track",
+      "seed": 74,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.010592926517219926,
+        0.0001315872528330437,
+        14.404686273906247
+      ]
+    },
+    {
+      "id": "train_075",
+      "generator": "generate_track",
+      "seed": 75,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.010450058910214314,
+        0.0001563838533254487,
+        12.793789975522188
+      ]
+    },
+    {
+      "id": "train_076",
+      "generator": "generate_track",
+      "seed": 76,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.010422550443854005,
+        0.0001750667488519839,
+        11.037705496973167
+      ]
+    },
+    {
+      "id": "train_077",
+      "generator": "generate_track",
+      "seed": 77,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.008445177173688015,
+        0.00011277140189201196,
+        15.593513984916108
+      ]
+    },
+    {
+      "id": "train_078",
+      "generator": "generate_track",
+      "seed": 78,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.012129585359363832,
+        0.0002095443302872595,
+        8.726824142823054
+      ]
+    },
+    {
+      "id": "train_079",
+      "generator": "generate_track",
+      "seed": 79,
+      "params": {},
+      "tier": "train",
+      "feature_vector": [
+        0.009541130823596868,
+        7.062248088302669e-05,
+        19.207146959366785
+      ]
+    }
+  ],
+  "held_out": {
+    "interpolation": [
+      {
+        "id": "interp_000",
+        "generator": "generate_track",
+        "seed": 10000,
+        "params": {},
+        "tier": "interpolation",
+        "feature_vector": [
+          0.011259712355129774,
+          0.00015745034270268405,
+          13.880128037191167
+        ]
+      },
+      {
+        "id": "interp_001",
+        "generator": "generate_track",
+        "seed": 10001,
+        "params": {},
+        "tier": "interpolation",
+        "feature_vector": [
+          0.009559942201575793,
+          0.00012607394785015927,
+          14.614918271499178
+        ]
+      },
+      {
+        "id": "interp_002",
+        "generator": "generate_track",
+        "seed": 10002,
+        "params": {},
+        "tier": "interpolation",
+        "feature_vector": [
+          0.012375561386498281,
+          0.00029685968232735,
+          6.2861017446885405
+        ]
+      },
+      {
+        "id": "interp_003",
+        "generator": "generate_track",
+        "seed": 10003,
+        "params": {},
+        "tier": "interpolation",
+        "feature_vector": [
+          0.01275666187225406,
+          0.00018211073998322848,
+          9.7378481638399
+        ]
+      },
+      {
+        "id": "interp_004",
+        "generator": "generate_track",
+        "seed": 10004,
+        "params": {},
+        "tier": "interpolation",
+        "feature_vector": [
+          0.0097113015101382,
+          9.377420009111054e-05,
+          19.79834476536095
+        ]
+      },
+      {
+        "id": "interp_005",
+        "generator": "generate_track",
+        "seed": 10005,
+        "params": {},
+        "tier": "interpolation",
+        "feature_vector": [
+          0.012349871881952308,
+          0.00014377288080541818,
+          15.668378097928667
+        ]
+      },
+      {
+        "id": "interp_006",
+        "generator": "generate_track",
+        "seed": 10006,
+        "params": {},
+        "tier": "interpolation",
+        "feature_vector": [
+          0.012670996941962083,
+          0.00034587356924144176,
+          7.802319756896175
+        ]
+      },
+      {
+        "id": "interp_007",
+        "generator": "generate_track",
+        "seed": 10007,
+        "params": {},
+        "tier": "interpolation",
+        "feature_vector": [
+          0.009614371778263457,
+          7.673331006791626e-05,
+          17.54748870299925
+        ]
+      },
+      {
+        "id": "interp_008",
+        "generator": "generate_track",
+        "seed": 10008,
+        "params": {},
+        "tier": "interpolation",
+        "feature_vector": [
+          0.011376473908167985,
+          0.0001392100007497923,
+          17.365984857625943
+        ]
+      },
+      {
+        "id": "interp_009",
+        "generator": "generate_track",
+        "seed": 10009,
+        "params": {},
+        "tier": "interpolation",
+        "feature_vector": [
+          0.011197746388241298,
+          0.00010399332350444229,
+          14.866158461038468
+        ]
+      },
+      {
+        "id": "interp_010",
+        "generator": "generate_track",
+        "seed": 10010,
+        "params": {},
+        "tier": "interpolation",
+        "feature_vector": [
+          0.012112513110896882,
+          0.00019267334897950778,
+          14.700526617026267
+        ]
+      },
+      {
+        "id": "interp_011",
+        "generator": "generate_track",
+        "seed": 10011,
+        "params": {},
+        "tier": "interpolation",
+        "feature_vector": [
+          0.008740267111590165,
+          8.034852768641835e-05,
+          17.74162184317727
+        ]
+      },
+      {
+        "id": "interp_012",
+        "generator": "generate_track",
+        "seed": 10012,
+        "params": {},
+        "tier": "interpolation",
+        "feature_vector": [
+          0.009689313401053314,
+          0.00010833119024724872,
+          12.096165328652145
+        ]
+      },
+      {
+        "id": "interp_013",
+        "generator": "generate_track",
+        "seed": 10013,
+        "params": {},
+        "tier": "interpolation",
+        "feature_vector": [
+          0.014085697342620973,
+          0.0003360346732883484,
+          8.325777640688038
+        ]
+      },
+      {
+        "id": "interp_014",
+        "generator": "generate_track",
+        "seed": 10014,
+        "params": {},
+        "tier": "interpolation",
+        "feature_vector": [
+          0.01099050114250162,
+          0.00012295726767494,
+          14.038872614527637
+        ]
+      }
+    ],
+    "extrapolation": [
+      {
+        "id": "extrap_000",
+        "generator": "generate_track_with_chicane",
+        "seed": 20000,
+        "params": {},
+        "tier": "extrapolation",
+        "feature_vector": [
+          0.0144897130080567,
+          0.003990165172756854,
+          0.48149858369808046
+        ]
+      },
+      {
+        "id": "extrap_001",
+        "generator": "generate_non_elliptical_track",
+        "seed": 20001,
+        "params": {},
+        "tier": "extrapolation",
+        "feature_vector": [
+          0.012689088319082324,
+          0.014046118822965815,
+          0.22637096448785915
+        ]
+      },
+      {
+        "id": "extrap_002",
+        "generator": "generate_track_with_chicane",
+        "seed": 20002,
+        "params": {},
+        "tier": "extrapolation",
+        "feature_vector": [
+          0.01573653277105672,
+          0.001810610972285384,
+          0.8736435510028774
+        ]
+      },
+      {
+        "id": "extrap_003",
+        "generator": "generate_non_elliptical_track",
+        "seed": 20003,
+        "params": {},
+        "tier": "extrapolation",
+        "feature_vector": [
+          0.014913772977322753,
+          0.030160344973142936,
+          0.15642395067410467
+        ]
+      },
+      {
+        "id": "extrap_004",
+        "generator": "generate_track_with_chicane",
+        "seed": 20004,
+        "params": {},
+        "tier": "extrapolation",
+        "feature_vector": [
+          0.013654329800231908,
+          0.0014235444314870276,
+          1.057256975930244
+        ]
+      },
+      {
+        "id": "extrap_005",
+        "generator": "generate_track_with_chicane",
+        "seed": 20006,
+        "params": {},
+        "tier": "extrapolation",
+        "feature_vector": [
+          0.01188739657544705,
+          0.00049028119392861,
+          2.0939155002553025
+        ]
+      },
+      {
+        "id": "extrap_006",
+        "generator": "generate_non_elliptical_track",
+        "seed": 20007,
+        "params": {},
+        "tier": "extrapolation",
+        "feature_vector": [
+          0.012574037504671294,
+          0.0013561347657953908,
+          1.3995800746992815
+        ]
+      },
+      {
+        "id": "extrap_007",
+        "generator": "generate_track_with_chicane",
+        "seed": 20008,
+        "params": {},
+        "tier": "extrapolation",
+        "feature_vector": [
+          0.01852370426585309,
+          0.013452660535708498,
+          0.2645149266942286
+        ]
+      },
+      {
+        "id": "extrap_008",
+        "generator": "generate_non_elliptical_track",
+        "seed": 20009,
+        "params": {},
+        "tier": "extrapolation",
+        "feature_vector": [
+          0.01098391895596458,
+          0.0008720102127253609,
+          1.613159674966881
+        ]
+      },
+      {
+        "id": "extrap_009",
+        "generator": "generate_track_with_chicane",
+        "seed": 20010,
+        "params": {},
+        "tier": "extrapolation",
+        "feature_vector": [
+          0.013354246194411175,
+          0.001964535813024882,
+          0.7892748026256275
+        ]
+      },
+      {
+        "id": "extrap_010",
+        "generator": "generate_non_elliptical_track",
+        "seed": 20011,
+        "params": {},
+        "tier": "extrapolation",
+        "feature_vector": [
+          0.009438460070414666,
+          0.0005678795160459579,
+          1.5693226506319495
+        ]
+      },
+      {
+        "id": "extrap_011",
+        "generator": "generate_track_with_chicane",
+        "seed": 20012,
+        "params": {},
+        "tier": "extrapolation",
+        "feature_vector": [
+          0.014664967014561171,
+          0.003174249704307945,
+          0.5402820835596498
+        ]
+      },
+      {
+        "id": "extrap_012",
+        "generator": "generate_track_with_chicane",
+        "seed": 20014,
+        "params": {},
+        "tier": "extrapolation",
+        "feature_vector": [
+          0.019645365323676216,
+          0.015349574679097507,
+          0.2450445297294624
+        ]
+      },
+      {
+        "id": "extrap_013",
+        "generator": "generate_track_with_chicane",
+        "seed": 20016,
+        "params": {},
+        "tier": "extrapolation",
+        "feature_vector": [
+          0.014249662748671716,
+          0.001788884441910898,
+          0.8573915453833041
+        ]
+      },
+      {
+        "id": "extrap_014",
+        "generator": "generate_non_elliptical_track",
+        "seed": 20017,
+        "params": {},
+        "tier": "extrapolation",
+        "feature_vector": [
+          0.010247898374954665,
+          0.0003960939111499878,
+          3.4211189550700367
+        ]
+      }
+    ]
+  },
+  "diversity_check": {
+    "passed": true,
+    "min_pairwise_distance": 0.012234533612244126
+  }
+}
