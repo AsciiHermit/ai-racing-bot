@@ -62,6 +62,7 @@ class RacingEnv(gym.Env):
         self._steps = 0
         self._prev_s = 0.0
         self._lap = 0
+        self._cumulative_progress = 0.0
 
     def _probe_obs_dim(self) -> int:
         start = self.track.sample_at_s(0.0)
@@ -82,6 +83,7 @@ class RacingEnv(gym.Env):
         self._steps = 0
         self._prev_s = 0.0
         self._lap = 0
+        self._cumulative_progress = 0.0
         for sensor in self.sensors:
             sensor.reset(self._state)
         obs = self._build_obs(self._state)
@@ -104,8 +106,19 @@ class RacingEnv(gym.Env):
         collided = abs(sample.lateral_offset) > sample.width / 2.0 + self.wall_margin
 
         ds = _progress_delta(self._prev_s, sample.s, self.track.length)
-        if _crossed_finish_line_forward(self._prev_s, sample.s, self.track.length):
-            self._lap += 1
+        # Lap count tracks cumulative *wrapped* progress, not a discrete
+        # "did the raw s value jump by ~track_length this step" check --
+        # the latter misfires when a near-stationary vehicle straddling a
+        # track's projection seam (e.g. FixedLoopTrack's segment-0/segment-3
+        # boundary) flickers between s~0 and s~track_length from noise
+        # alone, with no real net movement (see
+        # tests/env/test_lap_counting_robustness.py for the exact numbers
+        # that exposed this in a trained SAC baseline -- 81 "laps" in 40
+        # simulated seconds, physically impossible at the vehicle's max
+        # speed). ds is already the correctly-wrapped small value in that
+        # case, so accumulating it and floor-dividing is robust to it.
+        self._cumulative_progress += ds
+        self._lap = max(0, int(self._cumulative_progress // self.track.length))
         self._prev_s = sample.s
 
         reward = ds - 0.01 * abs(sample.lateral_offset)
@@ -145,12 +158,3 @@ def _progress_delta(prev_s: float, new_s: float, track_length: float) -> float:
     elif delta > track_length / 2:
         delta -= track_length
     return delta
-
-
-def _crossed_finish_line_forward(prev_s: float, new_s: float, track_length: float) -> bool:
-    """True if progress moved forward across s=track_length -> s=0 this
-    step (a completed lap), i.e. raw s dropped by more than half the track
-    -- as opposed to _progress_delta's return value, which is already
-    wraparound-corrected into [-length/2, length/2] and so can never
-    exceed that range itself."""
-    return (new_s - prev_s) < -track_length / 2
