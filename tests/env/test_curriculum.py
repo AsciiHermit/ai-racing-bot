@@ -24,6 +24,31 @@ def test_record_episode_applies_to_the_most_recently_sampled_track():
     assert provider.rolling_best[idx] == 42.0
 
 
+def test_record_episode_with_explicit_track_index_ignores_the_last_sampled_track():
+    # With several vectorized envs sharing one provider, the most recently
+    # sampled track belongs to whichever env reset last, not necessarily the
+    # env whose episode just finished -- callers must be able to say which.
+    pool = _pool()
+    provider = RegretCurriculumTrackProvider(pool, refresh_every=100, seed=0)
+    provider()
+    provider()  # some other env's reset moves _last_index
+    provider.record_episode(7.0, track_index=2)
+    assert provider.rolling_best[2] == 7.0
+    assert all(provider.rolling_best[i] == float("-inf") for i in (0, 1, 3))
+
+
+def test_index_of_returns_the_pool_index_and_rejects_unknown_tracks():
+    pool = _pool()
+    provider = RegretCurriculumTrackProvider(pool, seed=0)
+    assert provider.index_of(pool[2]) == 2
+    try:
+        provider.index_of(make_simple_oval(turn_radius=99.0))
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("expected ValueError for a track outside the pool")
+
+
 def test_weights_refresh_after_refresh_every_episodes_and_favor_high_regret_tracks():
     pool = _pool(n=2)
     provider = RegretCurriculumTrackProvider(pool, refresh_every=2, seed=0)

@@ -49,10 +49,20 @@ class RegretCurriculumTrackProvider:
         self._last_index = self._rng.choices(range(len(self.tracks)), weights=self.weights)[0]
         return self.tracks[self._last_index]
 
-    def record_episode(self, episode_return: float) -> None:
-        if self._last_index is None:
+    def index_of(self, track: Track) -> int:
+        for i, candidate in enumerate(self.tracks):
+            if candidate is track:
+                return i
+        raise ValueError("track is not in this provider's pool")
+
+    def record_episode(self, episode_return: float, track_index: int | None = None) -> None:
+        """track_index defaults to the most recently sampled track, which is
+        only right with a single env. With several vectorized envs sharing
+        this provider, pass the index of the track the finished episode
+        actually ran on (see index_of)."""
+        idx = track_index if track_index is not None else self._last_index
+        if idx is None:
             raise RuntimeError("record_episode() called before any track was sampled")
-        idx = self._last_index
         self._rolling_best[idx] = max(self._rolling_best[idx], episode_return)
         self._last_return[idx] = episode_return
         self._visited[idx] = True
