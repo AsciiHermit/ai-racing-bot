@@ -24,6 +24,11 @@ def main() -> None:
     parser.add_argument("--tier", choices=["train", "interpolation", "extrapolation"], default="interpolation")
     parser.add_argument("--manifest", default="data/tracks/manifest.json")
     parser.add_argument("--max-steps", type=int, default=2000)
+    parser.add_argument(
+        "--terminate-off-track",
+        action="store_true",
+        help="stop each episode at the first off-track step, so progress = distance driven before leaving the track",
+    )
     args = parser.parse_args()
 
     manifest = load_manifest(args.manifest)
@@ -33,11 +38,15 @@ def main() -> None:
     completed = 0
     lap_times = []
     gaps = []
+    progress_fractions = []
     for spec in specs:
         track = build_track(spec)
-        env = make_baseline_env(track=track, off_track_terminates=False, max_episode_steps=args.max_steps)
+        env = make_baseline_env(
+            track=track, off_track_terminates=args.terminate_off_track, max_episode_steps=args.max_steps
+        )
         obs, _ = env.reset()
         lap_time = None
+        info = {"lap": 0, "progress_s": 0.0}
         for step in range(args.max_steps):
             action, _ = model.predict(obs, deterministic=True)
             obs, reward, terminated, truncated, info = env.step(action)
@@ -45,6 +54,7 @@ def main() -> None:
                 lap_time = (step + 1) * env.dt
             if terminated or truncated:
                 break
+        progress_fractions.append((info["lap"] * track.length + info["progress_s"]) / track.length)
         if lap_time is not None:
             completed += 1
             lap_times.append(lap_time)
@@ -54,6 +64,10 @@ def main() -> None:
 
     n = len(specs)
     print(f"tier={args.tier} completed={completed}/{n} ({100 * completed / n:.0f}%)")
+    print(
+        f"progress at episode end: mean={statistics.mean(progress_fractions) * 100:.1f}% of a lap "
+        f"(min={min(progress_fractions) * 100:.1f}%, max={max(progress_fractions) * 100:.1f}%)"
+    )
     if lap_times:
         print(
             f"lap_time: mean={statistics.mean(lap_times):.2f}s "
