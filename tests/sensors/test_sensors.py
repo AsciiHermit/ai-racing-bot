@@ -1,13 +1,13 @@
 import math
 
-from ars.physics import KinematicBicyclePhysics
+from ars.physics import FourWheelPhysics
 from ars.sensors import LidarSensor, ProprioceptiveSensor, TrackPoseSensor
 from ars.track import make_simple_oval
 
 
 def test_pose_sensor_zero_offset_on_centerline():
     track = make_simple_oval()
-    physics = KinematicBicyclePhysics()
+    physics = FourWheelPhysics()
     sample = track.sample_at_s(0.0)
     state = physics.reset(sample.centerline_x, sample.centerline_y, sample.heading)
     frame = TrackPoseSensor().read(state, track)
@@ -17,7 +17,7 @@ def test_pose_sensor_zero_offset_on_centerline():
 
 def test_proprioceptive_sensor_shape():
     track = make_simple_oval()
-    physics = KinematicBicyclePhysics()
+    physics = FourWheelPhysics()
     state = physics.reset(0.0, 0.0, 0.0)
     frame = ProprioceptiveSensor().read(state, track)
     assert frame.readings["proprioceptive"].shape == (4,)
@@ -25,7 +25,7 @@ def test_proprioceptive_sensor_shape():
 
 def test_lidar_sensor_returns_num_rays():
     track = make_simple_oval()
-    physics = KinematicBicyclePhysics()
+    physics = FourWheelPhysics()
     sample = track.sample_at_s(0.0)
     state = physics.reset(sample.centerline_x, sample.centerline_y, sample.heading)
     sensor = LidarSensor(num_rays=5)
@@ -35,7 +35,7 @@ def test_lidar_sensor_returns_num_rays():
 
 def test_lidar_sensor_detects_boundary_within_max_range():
     track = make_simple_oval(width=10.0)
-    physics = KinematicBicyclePhysics()
+    physics = FourWheelPhysics()
     sample = track.sample_at_s(0.0)
     state = physics.reset(sample.centerline_x, sample.centerline_y, sample.heading)
     # 3 rays spanning fov=pi -> leftmost/rightmost point 90 degrees off

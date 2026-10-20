@@ -1,3 +1,3 @@
-from ars.physics.kinematic_stub import KinematicBicycleParams, KinematicBicyclePhysics
+from ars.physics.four_wheel import FourWheelParams, FourWheelPhysics
 
-__all__ = ["KinematicBicycleParams", "KinematicBicyclePhysics"]
+__all__ = ["FourWheelParams", "FourWheelPhysics"]

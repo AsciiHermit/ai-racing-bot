@@ -28,7 +28,7 @@ class LidarConfig:
 class PhysicsConfig:
     """v1 placeholder -- no real choice or params yet, one model exists."""
 
-    model_name: str = "kinematic_stub (v1 default, no tunable params yet)"
+    model_name: str = "four_wheel (v1 default, no tunable params yet)"
 
 
 @dataclass
